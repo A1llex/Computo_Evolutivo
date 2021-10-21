@@ -42,5 +42,10 @@ for articulo in articulos:
 print(f"la solucion es {solucion_voraz} con un total de carga de {carga} y un valor de {precio} de un maximo de {capacidad}")
 
 
+"""
+Solucion tabu , empezaremos al azar y mediremos a partir del valor total de la mochila
+"""
+
+
 
     
