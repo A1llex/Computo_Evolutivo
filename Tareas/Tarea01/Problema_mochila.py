@@ -39,12 +39,15 @@ for articulo in articulos:
     carga+= articulo[2]
     precio+= articulo[1]
 
-print(f"la solucion es {solucion_voraz} con un total de carga de {carga} y un valor de {precio} de un maximo de {capacidad}")
+print(f"la solucion es {solucion_voraz} con un total de carga de {carga} y un valor de {precio} de un maximo de {capacidad} carga")
 
 
 """
 Solucion tabu , empezaremos al azar y mediremos a partir del valor total de la mochila
+Se haran el tamaño de valores evaluaciones
 """
+
+#randomizar lista de 1-n para elegir esos elementos a la mochila mientras le quede espacio
 
 
 

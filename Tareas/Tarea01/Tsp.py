@@ -28,21 +28,9 @@ file1.close()
 """
 problema de la mochila Busqueda Voraz
 """
-ciudades.sort( key=lambda tup: (-tup[0],tup[2]) )
 
-carga =0
-precio = 0
-solucion_voraz = []
-indx = 0
-for articulo in ciudades:
-    if carga+articulo[2] > capacidad:
-        continue
-    solucion_voraz.append([articulo[1],articulo[2]])
-    carga+= articulo[2]
-    precio+= articulo[1]
-
-print(f"la solucion es {solucion_voraz} con un total de carga de {carga} y un x de {precio} de un maximo de {capacidad}")
-
+#gredy lo que haremos sera buscar para cada nodo cual es el mas cercano a el , depues se intentara trazar un ciclo
+#de ser que no se pueda seguir una linea se intentara conectar quitando el que pierda menos cantidad
 
 
     
