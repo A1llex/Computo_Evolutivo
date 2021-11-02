@@ -3,6 +3,7 @@ import numpy as np
 #from numpy.lib.nanfunctions import _nanvar_dispatcher
 
 """
+@author: Alex Gerardo Fernandez Aguilar
 Algoritmo Evoulutivo para resolver 
 f(x1,x2) = 418.9829*2 - x1*sin(sqrt(abs(x1))) - x2*sin(sqrt(abs(x2))) 
 en un rango de en [-500, 500]
@@ -16,6 +17,7 @@ Se realizara con la siguiente seleccion de componentes
 - Mutación: Uniforme
 - Selección: Más
 """
+
 
 def f(x1, x2):
     """
@@ -31,7 +33,8 @@ def f(x1, x2):
 def inicializar(f, npop, nvars, lb, ub, precision):
     # Generamos el Genotipo desde el limite inferior hasta el superior multiplicados por la preciion deseada,
     #  randint regresa una distribucion uniforme
-    genotipos = np.random.randint(low=lb*10**precision, high=ub*10**precision, size=[npop, nvars])
+    genotipos = np.random.randint(
+        low=lb*10**precision, high=ub*10**precision, size=[npop, nvars])
     # transformamos el genoripo a un Fenotipo dentro de los limites
     fenotipos = np.multiply(genotipos, 10**-precision)
     # Valuamos las aptitudes
@@ -39,17 +42,22 @@ def inicializar(f, npop, nvars, lb, ub, precision):
     return genotipos, fenotipos, aptitudes
 
 
-def seleccion_ruleta(aptitudes, n):
-    # suma de aptitudes
+def seleccion_universal_estocastica(aptitudes, npop):
+    # Probabilidad
     p = aptitudes/sum(aptitudes)
-    # acumulada
-    cp = np.cumsum(p)
-    parents = np.zeros(n)
-    # genearar aleatorio
-    for i in range(n):
-        X = np.random.uniform()
-        # seleccionando padre
-        parents[i] = np.argwhere(cp > X)[0]
+    # Valor esperado
+    vE = np.multiply(p, npop)
+    # Numero uniformemente aleatorio
+    ptr = np.random.uniform(0, 1)
+    # Suma actual
+    suma = 0
+    # lista de padres
+    parents = []
+    for i in range(len(p)):
+        suma += vE[i]
+        for ptr in np.arange(ptr, suma, 1):
+            parents = np.append(parents, i)
+            ptr += 1
     return parents.astype(int)
 
 
@@ -107,7 +115,7 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen):
     # Hasta condición de paro
     for i in range(ngen):
         # Selección de padres
-        idx = seleccion_ruleta(aptitudes, npop)
+        idx = seleccion_universal_estocastica(aptitudes, npop)
         # Cruza
         hijos_genotipos = cruza_un_punto(genotipos, idx, pc)
         # Mutación
@@ -143,6 +151,9 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen):
     return genotipos[idx], fenotipos[idx], aptitudes[idx]
 
 
+# Random seed
+seed = 21
+np.random.seed(seed=seed)
 # Numero de variables para el cromosoma
 nvars = 2
 # Numero de poblacion
