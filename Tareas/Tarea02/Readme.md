@@ -1,22 +1,25 @@
-# Tarea 1: algoritmos tradicionales
-Carlos Ignacio Hernández Castellanos
+# Tarea 2
+## Resolver el siguiente problema:
+### $f(x_1,x_2) = 418.9829*2 - x_1*\sin(sqrt( abs(x_1))) - x_2*\sin(sqrt(abs(x_2)))$ en $[-500, 500]$ para cada variable 
 
+* **(40 puntos)** Escribir un programa en Python que implemente un genético simple con los operadores/representación asignados a cada quien y que retenga al mejor individuo en cada generación
+* **(10 puntos)** El código debe imprimir en cada generación las siguientes estadísticas
+* Máximo, media y mínimo de aptitud nominal
+* Número de cruzas y mutaciones efectuadas
+* Cadena del mejor individuo
+* **(5 puntos)** Al final de la ejecución
+* Imprimir el mejor individuo encontrado, cadena, aptitud
+* **(5 puntos)** Estime el tamaño del espacio de búsqueda considerando 5 decimales de precisión e indique el porcentaje del espacio de búsqueda que exploró su algoritmo
+* **(10 puntos)** Ejecución con parámetros mínimos 6 individuos y 2 generaciones donde se muestren la población (genotipo y fenotipo), los padres seleccionados, puntos de cruza, hijos, valores de mutación, etc.
+* **(20 puntos)** Resultados promediados de 20 ejecuciones del algoritmo. Soluciones mínima, media, máxima y desviación estándar. Usar mismos parámetros para las 20 ejecuciones y reportarlos. Se debe generar un archivo por cada ejecución del algoritmo
+* **(10 puntos)** Reportar gráfica de convergencia. Eje x número de generaciones, eje y mediana de la mejor aptitud de cada generación
+* **PDF** con los resultados de la ejecución mínima, resultados promediados, gráfica de convergencia y estimación de tamaño del espacio de búsqueda (-30 puntos de no entregarlo).
 
-Fecha de entrega: 14 oct 23:59
-## Implementar en el lenguaje de su preferencia, al menos uno de los siguientes algoritmos:
-
-1. Búsqueda voraz
-3. Recocido simulado
-4. Búsqueda tabú
-
-•Aplicar en:
-1. Problema de la mochila. El archivo contiene en la primera línea el número de elementos de la lista seguido de la capacidad de la mochila. Para el resto del archivo, la primera columna representa el valor y la segunda el peso.
-2. f(x_1,x_2 )=x_1^2+x_2^2, -5≤x_1,x_2≤5
-
-•Extra:
-Utilizar el algoritmo desarrollado en el problema del viajero (tsp_85900_1). El archivo contiene en la primera línea el número de ciudades a visitar y en las subsecuentes las posiciones de cada ciudad. El objetivo del problema es visitar todas las ciudades una vez minimizando la suma de las distancias a recorrer. El resultado de este problema debe ser la lista de las ciudades en el orden en el que se sugiere visitarlas (ej. [1, 3, 5 9, 2,...]) y el costo del recorrido (120).
-
-Entrega:
-- análisis del algoritmo seleccionado: completitud, optimalidad, complejidad en tiempo y en espacio.
-- resultado obtenido en cada problema
-- código necesario para replicar los resultados
+### Selección de componentes
+**Alex Fernández** : 
+- Representacion: Real Entera
+- Selección de padres:  Universal Estocástica
+- Escalamiento: Ninguno
+- Cruza: Aritmética Total
+- Mutación: Uniforme
+- Selección: Más

@@ -1,20 +1,41 @@
 import numpy as np
+#from numpy.lib.financial import pmt
+#from numpy.lib.nanfunctions import _nanvar_dispatcher
+
+"""Algoritmo Evoulutivo para resolver 
+f(x1,x2) = 418.9829*2 - x1*sin(sqrt(abs(x1))) - x2*sin(sqrt(abs(x2))) 
+en un rango de en [-500, 500]
+Se realizara con la siguiente seleccion de componentes
+### Repartición de componentes
+**Alex Fernández** : 
+- Representacion: Real Entera
+- Selección de padres:  Universal Estocástica
+- Escalamiento: Ninguno
+- Cruza: Aritmética Total
+- Mutación: Uniforme
+- Selección: Más
+"""
+
+def f(x1,x2):
+    """
+    f(x1,x2)
+    Definicion de valucaion en esta funcion , esta tiene que minimizar el problema
+    f(x1,x2) = 418.9829*2 - x1*sin(sqrt(abs(x1))) - x2*sin(sqrt(abs(x2))) 
+    """
+    return 418.9829*2 - x1* np.sin(np.sqrt(np.abs(x1))) - x2*np.sin(np.sqrt(np.abs(x2)))
 
 
-#Es una funcion en 3d con x y  -5 ^2 es un paraboloide  
-def f(x): 
-    return -np.sum((x-50)**2, axis=1)+50*len(x)
-
-
-def inicializar(f,npop,nvars,lb,ub):
-    # Generar población inicial
-    genotipos = lb + (ub - lb) * np.random.uniform(low=0.0, high=1.0, size=[npop, nvars])
-    # Fenotipos
-    fenotipos = genotipos
-    # Evaluar población
-    aptitudes = f(fenotipos)
+#Genotipo sera la representacion real entera , es decir sin decimales
+#Fenotipo sera el valor que usaremos en la funcion, es decir la funcion con decimales
+def inicializar (f,npop,nvars,lb,ub,precision):
+    '''Generaremos primero el fenotipo ya que este si incluye decimales y es mas facil trabajar con los limites'''
+    #Generaremos el Fenotipo primero del rango inferior al superios junto con parte decimal y presicion
+    fenotipos = np.around(lb+ (ub-lb)*np.random.uniform(0, 1, size= [npop,nvars]),precision)
+    #codificaremos el fenotipo en el genotipo
+    genotipos = np.int_(np.multiply(fenotipos,10**precision))
+    aptitudes  = f(fenotipos)
+    
     return genotipos,fenotipos,aptitudes
-
 
 def seleccion_ruleta(aptitudes, n):
     #suma de aptitudes
@@ -113,12 +134,19 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen):
     idx = np.argmax(aptitudes)
     return genotipos[idx], fenotipos[idx], aptitudes[idx]
 
-nvars= 10
-lb = 0*np.ones(nvars)
-ub = 100*np.ones(nvars)
-pc = 0.9
-pm = 0.01
+#Numero de variables para el cromosoma
+nvars= 2
+#Numero de poblacion 
 npop = 200
+#limite inferior del espacio de busqueda
+lb = -500
+#Limite superior del espacio de busqueda
+ub = 500
+#porcentaje de Cruza
+pc = 0.9
+#Porcentaje de Mutacion
+pm = 0.01
+#Numero de Generaciones
 ngen = 500
 
 np.set_printoptions(formatter={'float': '{0: 0.3f}'.format})
