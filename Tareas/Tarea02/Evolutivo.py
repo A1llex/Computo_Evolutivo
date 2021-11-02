@@ -1,6 +1,6 @@
 import numpy as np
-#from numpy.lib.financial import pmt
-#from numpy.lib.nanfunctions import _nanvar_dispatcher
+from numpy.lib.financial import pmt
+from numpy.lib.nanfunctions import _nanvar_dispatcher
 
 """
 @author: Alex Gerardo Fernandez Aguilar
@@ -67,21 +67,53 @@ def seleccion_universal_estocastica(aptitudes, npop):
     return parents
 
 
-def cruza_aritmetica_total(genotipos, idx, pc):
+def a(lb, ub, vk, wk, precision):
+    """
+    [max(α, β), min(γ, δ)] si v_k > w_k
+    \n|0,0| si v_k = w_k (esto es que ambos valores se quedaran igual)
+    \n[max(γ, δ), min(α, β)] si v_k < w_k
+    """
+    if (vk == wk):
+        return vk, wk
+    llb = lb * 10**precision
+    uub = ub * 10 ** precision
+    alpha = (llb-wk) / (vk - wk)
+    beta = (uub-vk) / (wk - vk)
+    gamma = (llb-vk) / (wk - vk)
+    delta = (uub-wk) / (vk - wk)
+    if(vk > wk):
+        l = max(alpha, beta)
+        u = min(gamma, delta)
+    else:
+        l = max(gamma, delta)
+        u = min(alpha, beta)
+    a = np.random.uniform(low=l, high=u)
+    # Se transforman a int para que sean parte del genotipo
+    v = int(a*wk + (1-a)*vk)
+    w = int(a*vk + (1-a)*wk)
+    return v, w
+
+
+def cruza_aritmetica_total(lb, ub, genotipos, idx, pc, precision):
+    """Cruza Artimetica Total, si es acpetada su cruza , se aplicara para cada alelo la cruza de la funcion de a que se determina
+    \n[max(α, β), min(γ, δ)] si v_k > w_k
+    \n|0,0| si v_k = w_k (esto es que ambos valores se quedaran igual)
+    \n[max(γ, δ), min(α, β)] si v_k < w_k"""
     hijos_genotipos = np.zeros(np.shape(genotipos))
     k = 0
     for i, j in zip(idx[::2], idx[1::2]):
-        flip = np.random.uniform() <= pc
-        if flip:
-            punto_cruza = np.random.randint(0, len(genotipos[0]))
-            hijos_genotipos[k] = np.concatenate(
-                (genotipos[i, 0:punto_cruza], genotipos[j, punto_cruza:]))
-            hijos_genotipos[k+1] = np.concatenate(
-                (genotipos[j, 0:punto_cruza], genotipos[i, punto_cruza:]))
+        if np.random.uniform() <= pc:
+            for vk, wk in zip(genotipos[i], genotipos[j]):
+                v, w = a(lb, ub, vk, wk, precision)
+                hijos_genotipos[k] = v
+                hijos_genotipos[k+1] = w
         else:
             hijos_genotipos[k] = np.copy(genotipos[i])
             hijos_genotipos[k + 1] = np.copy(genotipos[j])
         k += 2
+    # si habia un numero impar de padres , el ultimo se incluira para que sea el mismo numero de padres que de hijos
+    if(k < len(idx)):
+        hijos_genotipos[k] = idx[-1]
     return hijos_genotipos
 
 
@@ -132,7 +164,8 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen, precision):
         # Selección de padres
         idx = seleccion_universal_estocastica(aptitudes, npop)
         # Cruza
-        hijos_genotipos = cruza_aritmetica_total(genotipos, idx, pc)
+        hijos_genotipos = cruza_aritmetica_total(
+            lb, ub, genotipos, idx, pc, precision)
         # Mutación
         hijos_genotipos = mutacion_uniforme(
             hijos_genotipos, lb, ub, pm, precision)
@@ -178,8 +211,8 @@ npop = 200
 lb = -500
 # Limite superior del espacio de busqueda
 ub = 500
-# Usaremos una Precision de 4 decimales
-precision = 4
+# Usaremos una Precision de 5 decimales
+precision = 5
 # porcentaje de Cruza
 pc = 0.9
 # Porcentaje de Mutacion
@@ -187,5 +220,5 @@ pm = 0.01
 # Numero de Generaciones
 ngen = 500
 
-np.set_printoptions(formatter={'float': '{0: 0.3f}'.format})
+np.set_printoptions(formatter={'float': '{0: 0.5f}'.format})
 print(EA(f, lb, ub, pc, pm, nvars, npop, ngen, precision))
