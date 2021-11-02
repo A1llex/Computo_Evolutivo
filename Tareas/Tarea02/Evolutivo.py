@@ -28,9 +28,9 @@ def f(x1, x2):
     return 418.9829*2 - x1 * np.sin(np.sqrt(np.abs(x1))) - x2*np.sin(np.sqrt(np.abs(x2)))
 
 
-# Genotipo sera la representacion real entera , es decir sin decimales
-# Fenotipo sera el valor que usaremos en la funcion, es decir la funcion con decimales
 def inicializar(f, npop, nvars, lb, ub, precision):
+    """Inicia con una poblacion aleatoria con un Genotipo Real Entero, 
+    y un fenotipo ``precision`` """
     # Generamos el Genotipo desde el limite inferior hasta el superior multiplicados por la preciion deseada,
     #  randint regresa una distribucion uniforme
     genotipos = np.random.randint(
@@ -43,6 +43,7 @@ def inicializar(f, npop, nvars, lb, ub, precision):
 
 
 def seleccion_universal_estocastica(aptitudes, npop):
+    """Funcion Estocastica para determinar ``npop`` padres de una fomra Universal Etocastica"""
     # Probabilidad
     p = aptitudes/sum(aptitudes)
     # Valor esperado
@@ -53,15 +54,15 @@ def seleccion_universal_estocastica(aptitudes, npop):
     suma = 0
     # lista de padres
     parents = []
-    for i in range(len(p)):
+    for i in range(npop):
         suma += vE[i]
         for ptr in np.arange(ptr, suma, 1):
-            parents = np.append(parents, i)
+            parents.append(parents, i)
             ptr += 1
-    return parents.astype(int)
+    return parents
 
 
-def cruza_un_punto(genotipos, idx, pc):
+def cruza_aritmetica_total(genotipos, idx, pc):
     hijos_genotipos = np.zeros(np.shape(genotipos))
     k = 0
     for i, j in zip(idx[::2], idx[1::2]):
@@ -88,8 +89,15 @@ def mutacion_uniforme(genotipos, lb, ub, pm):
     return genotipos
 
 
-def seleccion_coma(genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipo, hijos_aptitudes):
-    return hijos_genotipos, hijos_fenotipo, hijos_aptitudes
+def seleccion_mas(npop, genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipo, hijos_aptitudes):
+    """Seleccion mas para la poblacion , esto es unir ambas poblaciones y elegir la mejor mitad deacuerdo a la aptitud"""
+    # Lo que haremos sera juntar todos en una lista de 3-tuplas y ordenarlas por aptitud
+    total = list(zip(genotipos, fenotipos, aptitudes)) + \
+        list(zip(hijos_genotipos, hijos_fenotipo, hijos_aptitudes))
+    total.sort(key=lambda x: x[2])
+    total = total[:npop]
+    gen, fen, apt = zip(*total)
+    return gen, fen, apt
 
 
 def estadisticas(generacion, genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipo, hijos_aptitudes, padres):
@@ -117,7 +125,7 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen):
         # Selección de padres
         idx = seleccion_universal_estocastica(aptitudes, npop)
         # Cruza
-        hijos_genotipos = cruza_un_punto(genotipos, idx, pc)
+        hijos_genotipos = cruza_aritmetica_total(genotipos, idx, pc)
         # Mutación
         hijos_genotipos = mutacion_uniforme(hijos_genotipos, lb, ub, pm)
         hijos_fenotipo = hijos_genotipos
@@ -135,8 +143,8 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen):
         ba[i] = np.copy(aptitudes[idx_best])
 
         # Selección de siguiente generación
-        genotipos, fenotipos, aptitudes = seleccion_coma(
-            genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipo, hijos_aptitudes)
+        genotipos, fenotipos, aptitudes = seleccion_mas(npop,
+                                                        genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipo, hijos_aptitudes)
 
         # Elitismo
         idx = np.random.randint(npop)
