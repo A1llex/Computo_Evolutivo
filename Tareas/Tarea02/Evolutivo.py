@@ -2,7 +2,8 @@ import numpy as np
 #from numpy.lib.financial import pmt
 #from numpy.lib.nanfunctions import _nanvar_dispatcher
 
-"""Algoritmo Evoulutivo para resolver 
+"""
+Algoritmo Evoulutivo para resolver 
 f(x1,x2) = 418.9829*2 - x1*sin(sqrt(abs(x1))) - x2*sin(sqrt(abs(x2))) 
 en un rango de en [-500, 500]
 Se realizara con la siguiente seleccion de componentes
@@ -16,37 +17,38 @@ Se realizara con la siguiente seleccion de componentes
 - Selección: Más
 """
 
-def f(x1,x2):
+def f(x1, x2):
     """
     f(x1,x2)
     Definicion de valucaion en esta funcion , esta tiene que minimizar el problema
     f(x1,x2) = 418.9829*2 - x1*sin(sqrt(abs(x1))) - x2*sin(sqrt(abs(x2))) 
     """
-    return 418.9829*2 - x1* np.sin(np.sqrt(np.abs(x1))) - x2*np.sin(np.sqrt(np.abs(x2)))
+    return 418.9829*2 - x1 * np.sin(np.sqrt(np.abs(x1))) - x2*np.sin(np.sqrt(np.abs(x2)))
 
 
-#Genotipo sera la representacion real entera , es decir sin decimales
-#Fenotipo sera el valor que usaremos en la funcion, es decir la funcion con decimales
-def inicializar (f,npop,nvars,lb,ub,precision):
-    '''Generaremos primero el fenotipo ya que este si incluye decimales y es mas facil trabajar con los limites'''
-    #Generaremos el Fenotipo primero del rango inferior al superios junto con parte decimal y presicion
-    fenotipos = np.around(lb+ (ub-lb)*np.random.uniform(0, 1, size= [npop,nvars]),precision)
-    #codificaremos el fenotipo en el genotipo
-    genotipos = np.int_(np.multiply(fenotipos,10**precision))
-    aptitudes  = f(fenotipos)
-    
-    return genotipos,fenotipos,aptitudes
+# Genotipo sera la representacion real entera , es decir sin decimales
+# Fenotipo sera el valor que usaremos en la funcion, es decir la funcion con decimales
+def inicializar(f, npop, nvars, lb, ub, precision):
+    # Generamos el Genotipo desde el limite inferior hasta el superior multiplicados por la preciion deseada,
+    #  randint regresa una distribucion uniforme
+    genotipos = np.random.randint(low=lb*10**precision, high=ub*10**precision, size=[npop, nvars])
+    # transformamos el genoripo a un Fenotipo dentro de los limites
+    fenotipos = np.multiply(genotipos, 10**-precision)
+    # Valuamos las aptitudes
+    aptitudes = f(fenotipos)
+    return genotipos, fenotipos, aptitudes
+
 
 def seleccion_ruleta(aptitudes, n):
-    #suma de aptitudes
+    # suma de aptitudes
     p = aptitudes/sum(aptitudes)
-    #acumulada
-    cp= np.cumsum(p)
+    # acumulada
+    cp = np.cumsum(p)
     parents = np.zeros(n)
-    #genearar aleatorio
+    # genearar aleatorio
     for i in range(n):
         X = np.random.uniform()
-        #seleccionando padre
+        # seleccionando padre
         parents[i] = np.argwhere(cp > X)[0]
     return parents.astype(int)
 
@@ -55,11 +57,13 @@ def cruza_un_punto(genotipos, idx, pc):
     hijos_genotipos = np.zeros(np.shape(genotipos))
     k = 0
     for i, j in zip(idx[::2], idx[1::2]):
-        flip = np.random.uniform()<=pc
+        flip = np.random.uniform() <= pc
         if flip:
             punto_cruza = np.random.randint(0, len(genotipos[0]))
-            hijos_genotipos[k] = np.concatenate((genotipos[i,0:punto_cruza], genotipos[j,punto_cruza:]))
-            hijos_genotipos[k+1] = np.concatenate((genotipos[j, 0:punto_cruza], genotipos[i, punto_cruza:]))
+            hijos_genotipos[k] = np.concatenate(
+                (genotipos[i, 0:punto_cruza], genotipos[j, punto_cruza:]))
+            hijos_genotipos[k+1] = np.concatenate(
+                (genotipos[j, 0:punto_cruza], genotipos[i, punto_cruza:]))
         else:
             hijos_genotipos[k] = np.copy(genotipos[i])
             hijos_genotipos[k + 1] = np.copy(genotipos[j])
@@ -83,70 +87,75 @@ def seleccion_coma(genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenot
 def estadisticas(generacion, genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipo, hijos_aptitudes, padres):
     print('---------------------------------------------------------')
     print('Generación:', generacion)
-    print('Población:\n', np.concatenate((np.arange(len(aptitudes)).reshape(-1,1), genotipos, fenotipos, aptitudes.reshape(-1, 1), aptitudes.reshape(-1, 1)/np.sum(aptitudes)), 1))
+    print('Población:\n', np.concatenate((np.arange(len(aptitudes)).reshape(-1, 1), genotipos,
+                                          fenotipos, aptitudes.reshape(-1, 1), aptitudes.reshape(-1, 1)/np.sum(aptitudes)), 1))
     print('Padres:', padres)
     print('frecuencia de padres:', np.bincount(padres))
-    print('Hijos:\n', np.concatenate((np.arange(len(aptitudes)).reshape(-1, 1), hijos_genotipos, hijos_fenotipo, hijos_aptitudes.reshape(-1, 1), hijos_aptitudes.reshape(-1, 1)/np.sum(hijos_aptitudes)), 1))
+    print('Hijos:\n', np.concatenate((np.arange(len(aptitudes)).reshape(-1, 1), hijos_genotipos, hijos_fenotipo,
+                                      hijos_aptitudes.reshape(-1, 1), hijos_aptitudes.reshape(-1, 1)/np.sum(hijos_aptitudes)), 1))
     print('Desempeño en línea para t=1: ', np.mean(aptitudes))
     print('Desempeño fuera de línea para t=1: ', np.max(aptitudes))
     print('Mejor individuo en la generación: ', np.argmax(aptitudes))
 
 
 def EA(f, lb, ub, pc, pm, nvars, npop, ngen):
-    #Inicializar
+    # Inicializar
     bg = np.zeros((ngen, nvars))
     bf = np.zeros((ngen, nvars))
     ba = np.zeros((ngen, 1))
-    genotipos, fenotipos, aptitudes = inicializar(f,npop,nvars,lb,ub)
-    #Hasta condición de paro
+    genotipos, fenotipos, aptitudes = inicializar(f, npop, nvars, lb, ub)
+    # Hasta condición de paro
     for i in range(ngen):
-        #Selección de padres
+        # Selección de padres
         idx = seleccion_ruleta(aptitudes, npop)
-        #Cruza
+        # Cruza
         hijos_genotipos = cruza_un_punto(genotipos, idx, pc)
-        #Mutación
+        # Mutación
         hijos_genotipos = mutacion_uniforme(hijos_genotipos, lb, ub, pm)
         hijos_fenotipo = hijos_genotipos
-        hijos_aptitudes= f(hijos_genotipos)
+        hijos_aptitudes = f(hijos_genotipos)
 
         # Estadisticas
-        estadisticas(i, genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipo, hijos_aptitudes, idx)
+        estadisticas(i, genotipos, fenotipos, aptitudes,
+                     hijos_genotipos, hijos_fenotipo, hijos_aptitudes, idx)
 
-        #Mejor individuo
+        # Mejor individuo
         idx_best = np.argmax(aptitudes)
         b_gen = np.copy(genotipos[idx_best])
         b_fen = np.copy(fenotipos[idx_best])
         b_apt = np.copy(aptitudes[idx_best])
         ba[i] = np.copy(aptitudes[idx_best])
 
-        #Selección de siguiente generación
-        genotipos, fenotipos, aptitudes = seleccion_coma(genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipo, hijos_aptitudes)
+        # Selección de siguiente generación
+        genotipos, fenotipos, aptitudes = seleccion_coma(
+            genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipo, hijos_aptitudes)
 
-        #Elitismo
+        # Elitismo
         idx = np.random.randint(npop)
         genotipos[idx] = b_gen
         fenotipos[idx] = b_fen
         aptitudes[idx] = b_apt
-    #Fin ciclo
+    # Fin ciclo
 
     print('Tabla de mejores:\n', ba)
-    #Regresar mejor solución
+    # Regresar mejor solución
     idx = np.argmax(aptitudes)
     return genotipos[idx], fenotipos[idx], aptitudes[idx]
 
-#Numero de variables para el cromosoma
-nvars= 2
-#Numero de poblacion 
+
+# Numero de variables para el cromosoma
+nvars = 2
+# Numero de poblacion
 npop = 200
-#limite inferior del espacio de busqueda
+# limite inferior del espacio de busqueda
 lb = -500
-#Limite superior del espacio de busqueda
+# Limite superior del espacio de busqueda
 ub = 500
-#porcentaje de Cruza
+# porcentaje de Cruza
 pc = 0.9
-#Porcentaje de Mutacion
+# Porcentaje de Mutacion
 pm = 0.01
-#Numero de Generaciones
+# Numero de Generaciones
 ngen = 500
 
 np.set_printoptions(formatter={'float': '{0: 0.3f}'.format})
