@@ -146,7 +146,8 @@ def seleccion_mas(npop, genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_
 
 
 def estadistica(generacion, genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipos, hijos_aptitudes, padres, mutaciones, cruzas):
-    """Estadisticas, regresa [aptMin , aptMed ,aptMax,desvEst]"""
+    """Estadisticas, regresa [aptMin , aptMed ,aptMax,desvEst]
+    No hay que olvidar que lo que estamos haciendo es minimizar por eso buscamos el mas pequeño"""
     print('------------------------------------------------------------')
     print('Generación:', generacion)
     aptMax = np.argmax(aptitudes)
@@ -154,27 +155,27 @@ def estadistica(generacion, genotipos, fenotipos, aptitudes, hijos_genotipos, hi
     aptMin = np.argmin(aptitudes)
     desvEst = np.std(aptitudes)
     mediana = np.median(aptitudes)
-    # print(
-    #     f"Aptitud Maxima {aptitudes[aptMax]} \
-    #     \nAptitud media {aptMed} \
-    #     \nAptitud Minima {aptitudes[aptMin]}\
-    #     \nAptitud Mediana {mediana}")
-    # print("Desviacion Estandar", desvEst)
-    # print(f"Cruzas Efectuadas {cruzas} \
-    #     \nMutaciones Efectuadas {mutaciones}")
-    # print(f"Mejor individuo Genotipo: {genotipos[aptMax]} \
-    #     \nFenotipo: {fenotipos[aptMax]} \
-    #     \nAptitud: {aptitudes[aptMax]}")
+    print(f"Aptitud Maxima {aptitudes[aptMax]} \
+        \nAptitud media {aptMed} \
+        \nAptitud Minima {aptitudes[aptMin]}\
+        \nAptitud Mediana {mediana}")
+    print("Desviacion Estandar", desvEst)
+    print(f"Cruzas Efectuadas {cruzas} \
+        \nMutaciones Efectuadas {mutaciones}")
+    print(f"Mejor individuo Genotipo: {genotipos[aptMin]} \
+        \nFenotipo: {fenotipos[aptMin]} \
+        \nAptitud: {aptitudes[aptMin]}")
     # Informacion Requerida para ejecucion de 6 individuos y 2 generaciones.
-    print(f"-PADRES \
-        \nGenotipo {genotipos} \
-        \nFenotipo {fenotipos} \
-        \nPadres Seleccionados {padres} ")
-    print(f"-HIJOS\
-        \nGenotipo {hijos_genotipos} \
-        \nFenotipo {hijos_fenotipos} \
-        \nValores de cruza {cruzas} \
-        \nValores de Mutacion {mutaciones}")
+    # print(f"-PADRES \
+    #     \nGenotipo {genotipos} \
+    #     \nFenotipo {fenotipos} \
+    #     \nPadres Seleccionados {padres} ")
+    # print(f"-HIJOS\
+    #     \nGenotipo {hijos_genotipos} \
+    #     \nFenotipo {hijos_fenotipos} \
+    #     \nValores de cruza {cruzas} \
+    #     \nValores de Mutacion {mutaciones}")
+    
     return [aptMin, aptMed, aptMax, desvEst, mediana]
 
 
@@ -242,14 +243,12 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen, precision):
 
 
 # Random seed
-#seed = 21
-seed = 48
-#seed = np.random.randint(1000)
+seed = np.random.randint(100000)
 np.random.seed(seed=seed)
 # Numero de variables para el cromosoma
 nvars = 2
 # Numero de poblacion
-npop = 6
+npop = 20
 # limite inferior del espacio de busqueda
 lb = -500
 # Limite superior del espacio de busqueda
@@ -261,7 +260,7 @@ pc = 0.9
 # Porcentaje de Mutacion
 pm = 0.2
 # Numero de Generaciones
-ngen = 2
+ngen = 40
 
 print("Se utilizo la semilla aleatoria ", seed)
 bgen, bfen, bapt = EA(f, lb, ub, pc, pm, nvars, npop, ngen, precision)
