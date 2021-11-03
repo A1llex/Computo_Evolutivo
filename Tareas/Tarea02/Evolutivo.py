@@ -166,8 +166,7 @@ def estadistica(generacion, genotipos, fenotipos, aptitudes, hijos_genotipos, hi
     #     \nFenotipo: {fenotipos[aptMax]} \
     #     \nAptitud: {aptitudes[aptMax]}")
     # Informacion Requerida para ejecucion de 6 individuos y 2 generaciones.
-    print(f"Generacion {generacion} \
-        \n-PADRES \
+    print(f"-PADRES \
         \nGenotipo {genotipos} \
         \nFenotipo {fenotipos} \
         \nPadres Seleccionados {padres} ")
@@ -197,6 +196,13 @@ def grafica(estadisticas):
 
 
 def EA(f, lb, ub, pc, pm, nvars, npop, ngen, precision):
+    """Algoritmo Evolutivo para resolver f con 
+        -Representacion: Real Entera
+        - Selección de padres:  Universal Estocástica
+        - Escalamiento: Ninguno
+        - Cruza: Aritmética Total
+        - Mutación: Uniforme
+        - Selección: Más"""
     # Inicializar
     estadisticas = []
     ba = np.zeros((ngen, 1))
@@ -222,7 +228,7 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen, precision):
             estadistica(i, genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipos, hijos_aptitudes, idx, mutaciones, cruzas))
 
         # Mejor individuo
-        ba[i] = np.copy(aptitudes[estadisticas[i][2]])
+        ba[i] = np.copy(aptitudes[estadisticas[i][0]])
 
         # Selección de siguiente generación
         genotipos, fenotipos, aptitudes = seleccion_mas(npop,
@@ -231,13 +237,13 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen, precision):
     print('Tabla de mejores aptitudes :\n', ba)
     grafica(estadisticas)
     # Regresar mejor solución
-    idx = np.argmax(aptitudes)
+    idx = np.argmin(aptitudes)
     return genotipos[idx], fenotipos[idx], aptitudes[idx]
 
 
 # Random seed
 #seed = 21
-seed = 264
+seed = 48
 #seed = np.random.randint(1000)
 np.random.seed(seed=seed)
 # Numero de variables para el cromosoma
@@ -260,6 +266,8 @@ ngen = 2
 print("Se utilizo la semilla aleatoria ", seed)
 bgen, bfen, bapt = EA(f, lb, ub, pc, pm, nvars, npop, ngen, precision)
 print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-print(f"El Resultado del mejor genotipo es {bgen}  \
-    \n el mejor fenotipo es {bfen}  \
-    \n y la aptitud de este es  {bapt}")
+print(f"El Resultado del mejor individuo en base a su aptitud es el que tiene \
+    \nGenotipo es {bgen}  \
+    \nFenotipo es {bfen}  \
+    \nY una Aptitud de {bapt}")
+print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
