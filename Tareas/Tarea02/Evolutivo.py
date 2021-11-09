@@ -24,11 +24,7 @@ def f(x):
     Definicion de valucaion en esta funcion , esta tiene que minimizar el problema
     f(x1,x2) = 418.9829*2 - x1*sin(sqrt(abs(x1))) - x2*sin(sqrt(abs(x2))) 
     """
-    r = []
-    for i in x:
-        r.append(418.9829*2 - i[0] * np.sin(np.sqrt(np.abs(i[0]))
-                                            ) - i[1]*np.sin(np.sqrt(np.abs(i[1]))))
-    return r
+    return 418.9829*2 + np.sum(- x*np.sin(np.sqrt(np.abs( x ))) , axis = 1)
 
 
 def fenotipo(genotipos, precision):
@@ -53,7 +49,12 @@ def inicializar(f, npop, nvars, lb, ub, precision):
 def seleccion_universal_estocastica(aptitudes, npop):
     """Funcion Estocastica para determinar ``npop`` padres de una fomra Universal Etocastica"""
     # Probabilidad
-    p = aptitudes/sum(aptitudes)
+    # Es necesaria que como minimizamos la aptitud entre menor sera sera mejor por esto hay que 
+    g = 1/aptitudes
+    p = g/sum(g)
+    print("aptitud",aptitudes)
+    print("1/apt",g)
+    print("prob",p)
     # Valor Esperado
     vE = np.multiply(p, npop)
     # Numero uniformemente aleatorio
@@ -61,13 +62,13 @@ def seleccion_universal_estocastica(aptitudes, npop):
     # Suma actual
     suma = 0
     # lista de padres
-    parents = []
+    padres = []
     for i in range(npop):
         suma += vE[i]
         for ptr in np.arange(ptr, suma, 1):
-            parents.append(i)
+            padres.append(i)
             ptr += 1
-    return parents
+    return padres
 
 
 def a(lb, ub, vk, wk, precision):
@@ -97,7 +98,7 @@ def a(lb, ub, vk, wk, precision):
     return v, w
 
 
-def cruza_aritmetica_total(lb, ub, genotipos, idx, pc, precision):
+def cruza_aritmetica_total(lb, ub, genotipos, padres, pc, precision):
     """Cruza Artimetica Total, si es acpetada su cruza , se aplicara para cada alelo la cruza de la funcion de a que se determina
     \n[max(α, β), min(γ, δ)] si v_k > w_k
     \n|0,0| si v_k = w_k (esto es que ambos valores se quedaran igual)
@@ -105,7 +106,7 @@ def cruza_aritmetica_total(lb, ub, genotipos, idx, pc, precision):
     hijos_genotipos = np.zeros(np.shape(genotipos))
     k = 0
     cruzas = 0
-    for i, j in zip(idx[::2], idx[1::2]):
+    for i, j in zip(padres[::2], padres[1::2]):
         if np.random.uniform() <= pc:
             cruzas += 1
             for vk, wk in zip(genotipos[i], genotipos[j]):
@@ -117,8 +118,8 @@ def cruza_aritmetica_total(lb, ub, genotipos, idx, pc, precision):
             hijos_genotipos[k + 1] = np.copy(genotipos[j])
         k += 2
     # si habia un numero impar de padres , el ultimo se incluira para que sea el mismo numero de padres que de hijos
-    if(k < len(idx)):
-        hijos_genotipos[k] = idx[-1]
+    if(k < len(padres)):
+        hijos_genotipos[k] = padres[-1]
     return hijos_genotipos, cruzas
 
 
@@ -155,16 +156,23 @@ def estadistica(generacion, genotipos, fenotipos, aptitudes, hijos_genotipos, hi
     aptMin = np.argmin(aptitudes)
     desvEst = np.std(aptitudes)
     mediana = np.median(aptitudes)
+    print("La poblaicon y los hijos seran presentados como : \n[[indice, genotipo , fenotipo, aptitudes  , probabilidad],...]")
+    #print('Población:\n', np.concatenate((np.arange(len(aptitudes)).reshape(-1,1), genotipos, fenotipos, aptitudes.reshape(-1, 1), aptitudes.reshape(-1, 1)/np.sum(aptitudes)), 1))
+    print(f"Mejor individuo\
+        \nIndice: {aptMin} \
+        \nGenotipo: {genotipos[aptMin]} \
+        \nFenotipo: {fenotipos[aptMin]} \
+        \nAptitud: {aptitudes[aptMin]}")
     print(f"Aptitud Maxima {aptitudes[aptMax]} \
-        \nAptitud media {aptMed} \
+        \nAptitud Media {aptMed} \
         \nAptitud Minima {aptitudes[aptMin]}\
         \nAptitud Mediana {mediana}")
     print("Desviacion Estandar", desvEst)
+    print("Padres Seleccionados", padres)
+    print('Frecuencia de padres seleccionados:', np.bincount(padres))
     print(f"Cruzas Efectuadas {cruzas} \
         \nMutaciones Efectuadas {mutaciones}")
-    print(f"Mejor individuo Genotipo: {genotipos[aptMin]} \
-        \nFenotipo: {fenotipos[aptMin]} \
-        \nAptitud: {aptitudes[aptMin]}")
+    #print('Hijos:\n', np.concatenate(( np.arange(len(aptitudes)).reshape(-1, 1) , hijos_genotipos, hijos_fenotipos, hijos_aptitudes.reshape(-1, 1), hijos_aptitudes.reshape(-1, 1)/np.sum(hijos_aptitudes)), 1))
     # Informacion Requerida para ejecucion de 6 individuos y 2 generaciones.
     # print(f"-PADRES \
     #     \nGenotipo {genotipos} \
@@ -214,10 +222,10 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen, precision):
         mutaciones = 0
         cruzas = 0
         # Selección de padres
-        idx = seleccion_universal_estocastica(aptitudes, npop)
+        padres = seleccion_universal_estocastica(aptitudes, npop)
         # Cruza
         hijos_genotipos, cruzas = cruza_aritmetica_total(
-            lb, ub, genotipos, idx, pc, precision)
+            lb, ub, genotipos, padres, pc, precision)
         # Mutación
         hijos_genotipos, mutaciones = mutacion_uniforme(
             hijos_genotipos, lb, ub, pm, precision)
@@ -226,7 +234,7 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen, precision):
 
         # Estadistica
         estadisticas.append(
-            estadistica(i, genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipos, hijos_aptitudes, idx, mutaciones, cruzas))
+            estadistica(i, genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipos, hijos_aptitudes, padres, mutaciones, cruzas))
 
         # Mejor individuo
         ba[i] = np.copy(aptitudes[estadisticas[i][0]])
@@ -235,11 +243,11 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen, precision):
         genotipos, fenotipos, aptitudes = seleccion_mas(npop,
                                                         genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipos, hijos_aptitudes)
 
-    print('Tabla de mejores aptitudes :\n', ba)
+    print('Tabla de mejores aptitudes :\n', ba.reshape(-1, 1))
     grafica(estadisticas)
     # Regresar mejor solución
-    idx = np.argmin(aptitudes)
-    return genotipos[idx], fenotipos[idx], aptitudes[idx]
+    padres = np.argmin(aptitudes)
+    return genotipos[padres], fenotipos[padres], aptitudes[padres]
 
 
 # Random seed
@@ -260,10 +268,12 @@ pc = 0.9
 # Porcentaje de Mutacion
 pm = 0.2
 # Numero de Generaciones
-ngen = 40
+ngen = 30
 
-print("Se utilizo la semilla aleatoria ", seed)
+#modificaremos el formato para que  no aparezca en forma exponencial
+np.set_printoptions(suppress=True)
 bgen, bfen, bapt = EA(f, lb, ub, pc, pm, nvars, npop, ngen, precision)
+print("Se utilizo la semilla aleatoria ", seed)
 print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 print(f"El Resultado del mejor individuo en base a su aptitud es el que tiene \
     \nGenotipo es {bgen}  \
