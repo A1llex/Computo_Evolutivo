@@ -325,10 +325,6 @@ def grafica(estadisticas):
     Eje x número de generaciones, 
     eje y mediana de la mejor aptitud de cada generación"""
     # Plot
-    # plt.xlim(0,ngen)
-    # plt.ylim(0.8,1.4)
-
-    # Plot
     plt.plot(range(len(estadisticas)), list(zip(*estadisticas))[4], marker="o")
 
     plt.xlabel("Generaciones")

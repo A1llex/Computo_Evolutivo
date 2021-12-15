@@ -33,7 +33,7 @@ def f(x):
     x2 = np.delete(x , 0 , 1)
     sumando1 = (x2 + 47)*np.sin(np.sqrt(np.absolute(x2 + (x1/2) + 47)))
     sumando2 = x1*np.sin(np.sqrt(np.absolute(x1-(x2+47))))
-    return  - sumando1 - sumando2
+    return 960 - sumando1 - sumando2
 
 
 def inicializar(
@@ -276,10 +276,6 @@ def grafica(estadisticas):
     """Reportar gráfica de convergencia. 
     Eje x número de generaciones, 
     eje y mediana de la mejor aptitud de cada generación"""
-    # Plot
-    # plt.xlim(0,ngen)
-    # plt.ylim(0.8,1.4)
-
     # Plot
     plt.plot(range(len(estadisticas)), list(zip(*estadisticas))[4], marker="o")
 
