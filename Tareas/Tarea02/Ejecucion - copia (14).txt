@@ -1,0 +1,528 @@
+Se utilizo la semilla aleatoria  69421
+------------------------------------------------------------
+Generación: 0
+Aptitud Maxima 1257.614610797786
+Aptitud media 845.8156245254862
+Aptitud Minima 264.45963543041967
+Aptitud Mediana 896.2226459609137
+Desviacion Estandar 248.3486515237315
+Cruzas Efectuadas 9
+Mutaciones Efectuadas 9
+Mejor individuo Genotipo: [37581440 40353007]
+Fenotipo: [375.8144  403.53007]
+Aptitud: 264.45963543041967
+------------------------------------------------------------
+Generación: 1
+Aptitud Maxima 817.2485172233171
+Aptitud media 553.4771353063168
+Aptitud Minima 0.4471730038055739
+Aptitud Mediana 582.144176317116
+Desviacion Estandar 219.23148600316756
+Cruzas Efectuadas 8
+Mutaciones Efectuadas 9
+Mejor individuo Genotipo: [42229956. 42229956.]
+Fenotipo: [422.29956 422.29956]
+Aptitud: 0.4471730038055739
+------------------------------------------------------------
+Generación: 2
+Aptitud Maxima 692.5863999717637
+Aptitud media 483.5228531109382
+Aptitud Minima 0.4471730038055739
+Aptitud Mediana 540.194267944315
+Desviacion Estandar 176.1373134428144
+Cruzas Efectuadas 8
+Mutaciones Efectuadas 9
+Mejor individuo Genotipo: [42229956. 42229956.]
+Fenotipo: [422.29956 422.29956]
+Aptitud: 0.4471730038055739
+------------------------------------------------------------
+Generación: 3
+Aptitud Maxima 593.4941878264938
+Aptitud media 424.82727062626236
+Aptitud Minima 0.4471730038055739
+Aptitud Mediana 501.9556274622759
+Desviacion Estandar 181.27581406123542
+Cruzas Efectuadas 7
+Mutaciones Efectuadas 11
+Mejor individuo Genotipo: [42229956. 42229956.]
+Fenotipo: [422.29956 422.29956]
+Aptitud: 0.4471730038055739
+------------------------------------------------------------
+Generación: 4
+Aptitud Maxima 543.1889464153504
+Aptitud media 356.65006517057276
+Aptitud Minima 0.4471730038055739
+Aptitud Mediana 415.09768704272705
+Desviacion Estandar 160.53846299991034
+Cruzas Efectuadas 10
+Mutaciones Efectuadas 7
+Mejor individuo Genotipo: [42229956. 42229956.]
+Fenotipo: [422.29956 422.29956]
+Aptitud: 0.4471730038055739
+------------------------------------------------------------
+Generación: 5
+Aptitud Maxima 476.05950763812695
+Aptitud media 316.97399702084033
+Aptitud Minima 0.4471730038055739
+Aptitud Mediana 330.1584337998804
+Desviacion Estandar 132.6924826094515
+Cruzas Efectuadas 10
+Mutaciones Efectuadas 11
+Mejor individuo Genotipo: [42229956. 42229956.]
+Fenotipo: [422.29956 422.29956]
+Aptitud: 0.4471730038055739
+------------------------------------------------------------
+Generación: 6
+Aptitud Maxima 472.987862659052
+Aptitud media 316.29114031359535
+Aptitud Minima 0.4471730038055739
+Aptitud Mediana 330.1584337998804
+Desviacion Estandar 131.9048494086875
+Cruzas Efectuadas 8
+Mutaciones Efectuadas 10
+Mejor individuo Genotipo: [42229956. 42229956.]
+Fenotipo: [422.29956 422.29956]
+Aptitud: 0.4471730038055739
+------------------------------------------------------------
+Generación: 7
+Aptitud Maxima 393.5180064666599
+Aptitud media 279.09536358043727
+Aptitud Minima 0.4471730038055739
+Aptitud Mediana 302.76109730773373
+Desviacion Estandar 113.31406429994621
+Cruzas Efectuadas 8
+Mutaciones Efectuadas 4
+Mejor individuo Genotipo: [42229956. 42229956.]
+Fenotipo: [422.29956 422.29956]
+Aptitud: 0.4471730038055739
+------------------------------------------------------------
+Generación: 8
+Aptitud Maxima 368.28253170833744
+Aptitud media 255.13813138782584
+Aptitud Minima 0.4471730038055739
+Aptitud Mediana 277.72173621974287
+Desviacion Estandar 112.31556490029146
+Cruzas Efectuadas 9
+Mutaciones Efectuadas 5
+Mejor individuo Genotipo: [42229956. 42229956.]
+Fenotipo: [422.29956 422.29956]
+Aptitud: 0.4471730038055739
+------------------------------------------------------------
+Generación: 9
+Aptitud Maxima 325.787184761793
+Aptitud media 171.74167614199033
+Aptitud Minima 0.4471730038055739
+Aptitud Mediana 196.55341618695633
+Desviacion Estandar 118.36783653896929
+Cruzas Efectuadas 8
+Mutaciones Efectuadas 9
+Mejor individuo Genotipo: [42229956. 42229956.]
+Fenotipo: [422.29956 422.29956]
+Aptitud: 0.4471730038055739
+------------------------------------------------------------
+Generación: 10
+Aptitud Maxima 275.7084625858113
+Aptitud media 150.67062879373356
+Aptitud Minima 0.4471730038055739
+Aptitud Mediana 178.28660911581085
+Desviacion Estandar 100.9796727273972
+Cruzas Efectuadas 9
+Mutaciones Efectuadas 9
+Mejor individuo Genotipo: [42229956. 42229956.]
+Fenotipo: [422.29956 422.29956]
+Aptitud: 0.4471730038055739
+------------------------------------------------------------
+Generación: 11
+Aptitud Maxima 243.6517159327443
+Aptitud media 130.29633422836173
+Aptitud Minima 0.4471730038055739
+Aptitud Mediana 158.41229231396883
+Desviacion Estandar 93.3688839893157
+Cruzas Efectuadas 8
+Mutaciones Efectuadas 10
+Mejor individuo Genotipo: [42229956. 42229956.]
+Fenotipo: [422.29956 422.29956]
+Aptitud: 0.4471730038055739
+------------------------------------------------------------
+Generación: 12
+Aptitud Maxima 215.54660496385372
+Aptitud media 95.76955575046833
+Aptitud Minima 0.018031567820116834
+Aptitud Mediana 65.0060439893914
+Desviacion Estandar 85.30209798131531
+Cruzas Efectuadas 10
+Mutaciones Efectuadas 7
+Mejor individuo Genotipo: [42070162. 42070162.]
+Fenotipo: [420.70162 420.70162]
+Aptitud: 0.018031567820116834
+------------------------------------------------------------
+Generación: 13
+Aptitud Maxima 215.54660496385372
+Aptitud media 81.18776215145678
+Aptitud Minima 0.018031567820116834
+Aptitud Mediana 65.0060439893914
+Desviacion Estandar 75.48111372308685
+Cruzas Efectuadas 9
+Mutaciones Efectuadas 9
+Mejor individuo Genotipo: [42070162. 42070162.]
+Fenotipo: [420.70162 420.70162]
+Aptitud: 0.018031567820116834
+------------------------------------------------------------
+Generación: 14
+Aptitud Maxima 175.21248025559294
+Aptitud media 51.33395673139603
+Aptitud Minima 0.018031567820116834
+Aptitud Mediana 46.37694722634802
+Desviacion Estandar 48.1930218587184
+Cruzas Efectuadas 10
+Mutaciones Efectuadas 14
+Mejor individuo Genotipo: [42070162. 42070162.]
+Fenotipo: [420.70162 420.70162]
+Aptitud: 0.018031567820116834
+------------------------------------------------------------
+Generación: 15
+Aptitud Maxima 67.67760378083574
+Aptitud media 35.910343930245396
+Aptitud Minima 0.018031567820116834
+Aptitud Mediana 39.1828662711107
+Desviacion Estandar 27.45483150475544
+Cruzas Efectuadas 10
+Mutaciones Efectuadas 9
+Mejor individuo Genotipo: [42070162. 42070162.]
+Fenotipo: [420.70162 420.70162]
+Aptitud: 0.018031567820116834
+------------------------------------------------------------
+Generación: 16
+Aptitud Maxima 65.0060439893914
+Aptitud media 33.4185806514124
+Aptitud Minima 0.018031567820116834
+Aptitud Mediana 32.103999610274855
+Desviacion Estandar 26.709990459412165
+Cruzas Efectuadas 9
+Mutaciones Efectuadas 6
+Mejor individuo Genotipo: [42070162. 42070162.]
+Fenotipo: [420.70162 420.70162]
+Aptitud: 0.018031567820116834
+------------------------------------------------------------
+Generación: 17
+Aptitud Maxima 65.0060439893914
+Aptitud media 30.128376213500747
+Aptitud Minima 0.018031567820116834
+Aptitud Mediana 32.103999610274855
+Desviacion Estandar 24.55593967693337
+Cruzas Efectuadas 9
+Mutaciones Efectuadas 9
+Mejor individuo Genotipo: [42070162. 42070162.]
+Fenotipo: [420.70162 420.70162]
+Aptitud: 0.018031567820116834
+------------------------------------------------------------
+Generación: 18
+Aptitud Maxima 65.0060439893914
+Aptitud media 25.19306955663327
+Aptitud Minima 0.018031567820116834
+Aptitud Mediana 32.103999610274855
+Desviacion Estandar 19.918700468854436
+Cruzas Efectuadas 9
+Mutaciones Efectuadas 15
+Mejor individuo Genotipo: [42070162. 42070162.]
+Fenotipo: [420.70162 420.70162]
+Aptitud: 0.018031567820116834
+------------------------------------------------------------
+Generación: 19
+Aptitud Maxima 32.103999610274855
+Aptitud media 20.475570357114297
+Aptitud Minima 0.018031567820116834
+Aptitud Mediana 32.103999610274855
+Desviacion Estandar 13.441269748334507
+Cruzas Efectuadas 9
+Mutaciones Efectuadas 7
+Mejor individuo Genotipo: [42070162. 42070162.]
+Fenotipo: [420.70162 420.70162]
+Aptitud: 0.018031567820116834
+------------------------------------------------------------
+Generación: 20
+Aptitud Maxima 32.103999610274855
+Aptitud media 20.475570357114297
+Aptitud Minima 0.018031567820116834
+Aptitud Mediana 32.103999610274855
+Desviacion Estandar 13.441269748334507
+Cruzas Efectuadas 8
+Mutaciones Efectuadas 10
+Mejor individuo Genotipo: [42070162. 42070162.]
+Fenotipo: [420.70162 420.70162]
+Aptitud: 0.018031567820116834
+------------------------------------------------------------
+Generación: 21
+Aptitud Maxima 32.103999610274855
+Aptitud media 20.475570357114297
+Aptitud Minima 0.018031567820116834
+Aptitud Mediana 32.103999610274855
+Desviacion Estandar 13.441269748334507
+Cruzas Efectuadas 9
+Mutaciones Efectuadas 5
+Mejor individuo Genotipo: [42070162. 42070162.]
+Fenotipo: [420.70162 420.70162]
+Aptitud: 0.018031567820116834
+------------------------------------------------------------
+Generación: 22
+Aptitud Maxima 32.103999610274855
+Aptitud media 20.475570357114297
+Aptitud Minima 0.018031567820116834
+Aptitud Mediana 32.103999610274855
+Desviacion Estandar 13.441269748334507
+Cruzas Efectuadas 10
+Mutaciones Efectuadas 5
+Mejor individuo Genotipo: [42070162. 42070162.]
+Fenotipo: [420.70162 420.70162]
+Aptitud: 0.018031567820116834
+------------------------------------------------------------
+Generación: 23
+Aptitud Maxima 32.103999610274855
+Aptitud media 20.475570357114297
+Aptitud Minima 0.018031567820116834
+Aptitud Mediana 32.103999610274855
+Desviacion Estandar 13.441269748334507
+Cruzas Efectuadas 8
+Mutaciones Efectuadas 8
+Mejor individuo Genotipo: [42070162. 42070162.]
+Fenotipo: [420.70162 420.70162]
+Aptitud: 0.018031567820116834
+------------------------------------------------------------
+Generación: 24
+Aptitud Maxima 32.103999610274855
+Aptitud media 14.977244017177835
+Aptitud Minima 0.018031567820116834
+Aptitud Mediana 11.014298801155888
+Desviacion Estandar 13.535549810186152
+Cruzas Efectuadas 10
+Mutaciones Efectuadas 7
+Mejor individuo Genotipo: [42070162. 42070162.]
+Fenotipo: [420.70162 420.70162]
+Aptitud: 0.018031567820116834
+------------------------------------------------------------
+Generación: 25
+Aptitud Maxima 32.103999610274855
+Aptitud media 14.261595338215068
+Aptitud Minima 0.018031567820116834
+Aptitud Mediana 11.014298801155888
+Desviacion Estandar 12.978002012486984
+Cruzas Efectuadas 9
+Mutaciones Efectuadas 7
+Mejor individuo Genotipo: [42070162. 42070162.]
+Fenotipo: [420.70162 420.70162]
+Aptitud: 0.018031567820116834
+------------------------------------------------------------
+Generación: 26
+Aptitud Maxima 32.103999610274855
+Aptitud media 11.504313338177994
+Aptitud Minima 2.546923133195378e-05
+Aptitud Mediana 8.5527231173227
+Desviacion Estandar 11.530559027794524
+Cruzas Efectuadas 10
+Mutaciones Efectuadas 16
+Mejor individuo Genotipo: [42096851. 42096851.]
+Fenotipo: [420.96851 420.96851]
+Aptitud: 2.546923133195378e-05
+------------------------------------------------------------
+Generación: 27
+Aptitud Maxima 30.447443965046773
+Aptitud media 10.871159339574831
+Aptitud Minima 2.546923133195378e-05
+Aptitud Mediana 8.5527231173227
+Desviacion Estandar 10.481933842831136
+Cruzas Efectuadas 7
+Mutaciones Efectuadas 3
+Mejor individuo Genotipo: [42096851. 42096851.]
+Fenotipo: [420.96851 420.96851]
+Aptitud: 2.546923133195378e-05
+------------------------------------------------------------
+Generación: 28
+Aptitud Maxima 17.7910260310195
+Aptitud media 6.253826965615858
+Aptitud Minima 2.546923133195378e-05
+Aptitud Mediana 3.013819649926745
+Desviacion Estandar 6.772422846003362
+Cruzas Efectuadas 10
+Mutaciones Efectuadas 7
+Mejor individuo Genotipo: [42096851. 42096851.]
+Fenotipo: [420.96851 420.96851]
+Aptitud: 2.546923133195378e-05
+------------------------------------------------------------
+Generación: 29
+Aptitud Maxima 15.510411284680231
+Aptitud media 4.467958831496665
+Aptitud Minima 2.546923133195378e-05
+Aptitud Mediana 0.9771052569464587
+Desviacion Estandar 5.4952552962931325
+Cruzas Efectuadas 9
+Mutaciones Efectuadas 12
+Mejor individuo Genotipo: [42096851. 42096851.]
+Fenotipo: [420.96851 420.96851]
+Aptitud: 2.546923133195378e-05
+------------------------------------------------------------
+Generación: 30
+Aptitud Maxima 13.023588228986057
+Aptitud media 3.74665966087656
+Aptitud Minima 2.546923133195378e-05
+Aptitud Mediana 0.9771052569464587
+Desviacion Estandar 4.602621712935996
+Cruzas Efectuadas 10
+Mutaciones Efectuadas 5
+Mejor individuo Genotipo: [42096851. 42096851.]
+Fenotipo: [420.96851 420.96851]
+Aptitud: 2.546923133195378e-05
+------------------------------------------------------------
+Generación: 31
+Aptitud Maxima 9.00500937332572
+Aptitud media 2.8721849102598385
+Aptitud Minima 2.546923133195378e-05
+Aptitud Mediana 0.9771052569464587
+Desviacion Estandar 3.205740565808961
+Cruzas Efectuadas 10
+Mutaciones Efectuadas 7
+Mejor individuo Genotipo: [42096851. 42096851.]
+Fenotipo: [420.96851 420.96851]
+Aptitud: 2.546923133195378e-05
+------------------------------------------------------------
+Generación: 32
+Aptitud Maxima 8.100436861319679
+Aptitud media 1.8298221821528529
+Aptitud Minima 2.546923133195378e-05
+Aptitud Mediana 0.9771052569464587
+Desviacion Estandar 1.9546560688157977
+Cruzas Efectuadas 8
+Mutaciones Efectuadas 6
+Mejor individuo Genotipo: [42096851. 42096851.]
+Fenotipo: [420.96851 420.96851]
+Aptitud: 2.546923133195378e-05
+------------------------------------------------------------
+Generación: 33
+Aptitud Maxima 3.571250927972301
+Aptitud media 1.1487649628775387
+Aptitud Minima 2.546923133195378e-05
+Aptitud Mediana 0.9771052569464587
+Desviacion Estandar 0.9962109557213936
+Cruzas Efectuadas 8
+Mutaciones Efectuadas 11
+Mejor individuo Genotipo: [42096851. 42096851.]
+Fenotipo: [420.96851 420.96851]
+Aptitud: 2.546923133195378e-05
+------------------------------------------------------------
+Generación: 34
+Aptitud Maxima 1.2982613149325744
+Aptitud media 0.8460399040079836
+Aptitud Minima 2.546923133195378e-05
+Aptitud Mediana 0.9478664205695395
+Desviacion Estandar 0.4823991708925094
+Cruzas Efectuadas 8
+Mutaciones Efectuadas 10
+Mejor individuo Genotipo: [42096851. 42096851.]
+Fenotipo: [420.96851 420.96851]
+Aptitud: 2.546923133195378e-05
+------------------------------------------------------------
+Generación: 35
+Aptitud Maxima 1.2982613149325744
+Aptitud media 0.742631455880138
+Aptitud Minima 2.546923133195378e-05
+Aptitud Mediana 0.9188741648097221
+Desviacion Estandar 0.44026788169038467
+Cruzas Efectuadas 9
+Mutaciones Efectuadas 6
+Mejor individuo Genotipo: [42096851. 42096851.]
+Fenotipo: [420.96851 420.96851]
+Aptitud: 2.546923133195378e-05
+------------------------------------------------------------
+Generación: 36
+Aptitud Maxima 1.0063440933233778
+Aptitud media 0.6536751847013761
+Aptitud Minima 2.546923133195378e-05
+Aptitud Mediana 0.7883323338849095
+Desviacion Estandar 0.3566896820617598
+Cruzas Efectuadas 8
+Mutaciones Efectuadas 8
+Mejor individuo Genotipo: [42096851. 42096851.]
+Fenotipo: [420.96851 420.96851]
+Aptitud: 2.546923133195378e-05
+------------------------------------------------------------
+Generación: 37
+Aptitud Maxima 0.9478664205695395
+Aptitud media 0.6250736555940989
+Aptitud Minima 2.546923133195378e-05
+Aptitud Mediana 0.7883323338849095
+Desviacion Estandar 0.34197790002014966
+Cruzas Efectuadas 9
+Mutaciones Efectuadas 8
+Mejor individuo Genotipo: [42096851. 42096851.]
+Fenotipo: [420.96851 420.96851]
+Aptitud: 2.546923133195378e-05
+------------------------------------------------------------
+Generación: 38
+Aptitud Maxima 0.9478664205695395
+Aptitud media 0.5648901896984739
+Aptitud Minima 2.546923133195378e-05
+Aptitud Mediana 0.7883323338849095
+Desviacion Estandar 0.3091194944476603
+Cruzas Efectuadas 9
+Mutaciones Efectuadas 6
+Mejor individuo Genotipo: [42096851. 42096851.]
+Fenotipo: [420.96851 420.96851]
+Aptitud: 2.546923133195378e-05
+------------------------------------------------------------
+Generación: 39
+Aptitud Maxima 0.7883323338849095
+Aptitud media 0.5315360623815252
+Aptitud Minima 2.546923133195378e-05
+Aptitud Mediana 0.6910899658736867
+Desviacion Estandar 0.29324138733639626
+Cruzas Efectuadas 8
+Mutaciones Efectuadas 5
+Mejor individuo Genotipo: [42096851. 42096851.]
+Fenotipo: [420.96851 420.96851]
+Aptitud: 2.546923133195378e-05
+Tabla de mejores aptitudes :
+ [[2.64459635e+02]
+ [4.47173004e-01]
+ [4.47173004e-01]
+ [4.47173004e-01]
+ [4.47173004e-01]
+ [4.47173004e-01]
+ [4.47173004e-01]
+ [4.47173004e-01]
+ [4.47173004e-01]
+ [4.47173004e-01]
+ [4.47173004e-01]
+ [4.47173004e-01]
+ [1.80315678e-02]
+ [1.80315678e-02]
+ [1.80315678e-02]
+ [1.80315678e-02]
+ [1.80315678e-02]
+ [1.80315678e-02]
+ [1.80315678e-02]
+ [1.80315678e-02]
+ [1.80315678e-02]
+ [1.80315678e-02]
+ [1.80315678e-02]
+ [1.80315678e-02]
+ [1.80315678e-02]
+ [1.80315678e-02]
+ [2.54692313e-05]
+ [2.54692313e-05]
+ [2.54692313e-05]
+ [2.54692313e-05]
+ [2.54692313e-05]
+ [2.54692313e-05]
+ [2.54692313e-05]
+ [2.54692313e-05]
+ [2.54692313e-05]
+ [2.54692313e-05]
+ [2.54692313e-05]
+ [2.54692313e-05]
+ [2.54692313e-05]
+ [2.54692313e-05]]
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+El Resultado del mejor individuo en base a su aptitud es el que tiene
+Genotipo es [42096851. 42096851.]
+Fenotipo es [420.96851 420.96851]
+Y una Aptitud de 2.546923133195378e-05
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
