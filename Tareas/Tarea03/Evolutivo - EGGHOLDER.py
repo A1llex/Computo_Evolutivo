@@ -345,7 +345,7 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen, step, bl_iteraciones, radio):
         )
 
     # Grafica
-    # grafica(estadisticas)
+    grafica(estadisticas)
     # Regresar mejor solución
     best = np.argmin(aptitudes)
     return genotipos, fenotipos, aptitudes
@@ -390,4 +390,4 @@ print("minima", np.min(bapt))
 print("media", np.mean(bapt))
 print("mediana", np.median(bapt))
 print("desviacion estandar", np.std(bapt))
-
+print("Aptitudes", bapt)

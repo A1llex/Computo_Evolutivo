@@ -1,54 +1,33 @@
 import numpy as np
-from sympy import *
 import matplotlib.pyplot as plt
 
 """
 @author: Alex Gerardo Fernandez Aguilar
-Algoritmo Evoulutivo para resolver  EASOM  
-en un rango de en [-100, 100]
-Se realizara con la siguiente seleccion de componentes
-### Repartición de componentes
-**Alex Fernández** : 
-- Representacion: Real
-- Selección de padres:  Universal Estocástica
-- Escalamiento: Ninguno
-- Cruza: Aritmética Total
-- Mutación: Uniforme
-- Selección: Más
-### Tecmica Avanzada
-- Meméticos : Lamarkiano con decenso del gradiente
-- Tecnica de diversidad : Procedimiento de clearing
-
 """
-
-
-# Aqui sera necesario declarar la funcion para que sympy realice el calculo del gradiente
-x1, x2 = symbols("x1 x2", real=True)
-sympyf = -cos(x1) * cos(x2) * exp(-((x1 - pi) ** 2) - (x2 - pi) ** 2)
-grad_f = lambdify((x1, x2), derive_by_array(sympyf, (x1, x2)))
-
 
 def f(x):
     x1 = np.delete(x, 0, 1)
     x2 = np.delete(x, 0, 1)
-    return (
-        -np.cos(x1) * np.cos(x2) * np.exp(-((x1 - np.pi) ** 2) - (x2 - np.pi) ** 2)
-        + 1.0001
-    )
+    sumando1 = (x2 + 47) * np.sin(np.sqrt(np.absolute(x2 + (x1 / 2) + 47)))
+    sumando2 = x1 * np.sin(np.sqrt(np.absolute(x1 - (x2 + 47))))
+    return 960 - sumando1 - sumando2
 
 
-def inicializar(
-    f, npop, nvars, lb, ub,
-):
+def fenotipo(genotipos, precision):
+    """Funcion que regresa el fenotipo de un Genotipo con la presicion deseada"""
+    return np.multiply(genotipos, 10 ** -precision)
+
+
+def inicializar(f, npop, nvars, lb, ub, precision):
     """Inicia con una poblacion aleatoria con un Genotipo Real Entero, 
-    y un fenotipo  """
+    y un fenotipo con ``precision`` """
     # Generamos el Genotipo desde el limite inferior hasta el superior multiplicados por la preciion deseada,
     #  randint regresa una distribucion uniforme
-    genotipos = lb + (ub - lb) * np.random.uniform(
-        low=0.0, high=1.0, size=[npop, nvars]
+    genotipos = np.random.randint(
+        low=lb * 10 ** precision, high=ub * 10 ** precision, size=[npop, nvars]
     )
     # transformamos el genoripo a un Fenotipo dentro de los limites
-    fenotipos = genotipos
+    fenotipos = fenotipo(genotipos, precision)
     # Valuamos las aptitudes
     aptitudes = f(fenotipos)
     return genotipos, fenotipos, aptitudes
@@ -71,13 +50,12 @@ def seleccion_universal_estocastica(aptitudes, npop):
     for i in range(npop):
         suma += vE[i]
         for ptr in np.arange(ptr, suma, 1):
-            if len(padres) < npop:
-                padres.append(i)
+            padres.append(i)
             ptr += 1
     return padres
 
 
-def a(lb, ub, vk, wk):
+def a(lb, ub, vk, wk, precision):
     """
     [max(α, β), min(γ, δ)] si v_k > w_k
     \n|0,0| si v_k = w_k (esto es que ambos valores se quedaran igual)
@@ -85,10 +63,12 @@ def a(lb, ub, vk, wk):
     """
     if vk == wk:
         return vk, wk
-    alpha = (lb - wk) / (vk - wk)
-    beta = (ub - vk) / (wk - vk)
-    gamma = (lb - vk) / (wk - vk)
-    delta = (ub - wk) / (vk - wk)
+    llb = lb * 10 ** precision
+    uub = ub * 10 ** precision
+    alpha = (llb - wk) / (vk - wk)
+    beta = (uub - vk) / (wk - vk)
+    gamma = (llb - vk) / (wk - vk)
+    delta = (uub - wk) / (vk - wk)
     if vk > wk:
         l = max(alpha, beta)
         u = min(gamma, delta)
@@ -102,7 +82,7 @@ def a(lb, ub, vk, wk):
     return v, w
 
 
-def cruza_aritmetica_total(lb, ub, genotipos, padres, pc):
+def cruza_aritmetica_total(lb, ub, genotipos, padres, pc, precision):
     """Cruza Artimetica Total, si es acpetada su cruza , se aplicara para cada alelo la cruza de la funcion de a que se determina
     \n[max(α, β), min(γ, δ)] si v_k > w_k
     \n|0,0| si v_k = w_k (esto es que ambos valores se quedaran igual)
@@ -114,7 +94,7 @@ def cruza_aritmetica_total(lb, ub, genotipos, padres, pc):
         if np.random.uniform() <= pc:
             cruzas += 1
             for vk, wk in zip(genotipos[i], genotipos[j]):
-                v, w = a(lb, ub, vk, wk)
+                v, w = a(lb, ub, vk, wk, precision)
                 hijos_genotipos[k] = v
                 hijos_genotipos[k + 1] = w
         else:
@@ -127,18 +107,20 @@ def cruza_aritmetica_total(lb, ub, genotipos, padres, pc):
     return hijos_genotipos, cruzas
 
 
-def mutacion_uniforme(genotipos, lb, ub, pm):
+def mutacion_uniforme(genotipos, lb, ub, pm, precision):
     """Mutacion Uniforme,lo que haremos sera elegir un numero aleatorio entre nuestros limites y sustituirlo en una posicion seleccionada"""
     mutaciones = 0
     for i in range(len(genotipos)):
         for j in range(len(genotipos[i])):
             if np.random.uniform() <= pm:
                 mutaciones += 1
-                genotipos[i, j] = lb + (ub - lb) * np.random.uniform(low=0.0, high=1.0)
+                genotipos[i, j] = np.random.randint(
+                    low=lb * 10 ** precision, high=ub * 10 ** precision
+                )
     return genotipos, mutaciones
 
 
-def seleccion_mas_clearing(
+def seleccion_mas(
     npop,
     genotipos,
     fenotipos,
@@ -146,61 +128,16 @@ def seleccion_mas_clearing(
     hijos_genotipos,
     hijos_fenotipos,
     hijos_aptitudes,
-    radio,
 ):
     """Seleccion mas para la poblacion , esto es unir ambas poblaciones y elegir la mejor mitad deacuerdo a la aptitud"""
-    # Lo que haremos sera juntar todos en una lista de 3-tuplas+1 y ordenarlas por aptitud
-
-    # meteremos otra que sera true o false o 1 y 0 si son centros o no
-    pganador = np.zeros(len(aptitudes), dtype=float)
-    hganador = np.zeros(len(hijos_aptitudes), dtype=float)
-
-    # Representacion de tuplas de ([genotipo1,genotipo2], [fenotipo1,fenotipo2], [aptitud] , [0])
-    total = list(zip(genotipos, fenotipos, aptitudes, pganador)) + list(
-        zip(hijos_genotipos, hijos_fenotipos, hijos_aptitudes, hganador)
+    # Lo que haremos sera juntar todos en una lista de 3-tuplas y ordenarlas por aptitud
+    total = list(zip(genotipos, fenotipos, aptitudes)) + list(
+        zip(hijos_genotipos, hijos_fenotipos, hijos_aptitudes)
     )
-    # ordenados segun su aptitud
     total.sort(key=lambda x: x[2])
-    # PROCEDIMIENTO DE CLEARING
-    # modificaremos sus ganadores
-    ganador = []
-    total[0] = list(total[0])
-    total[0][3] = 1
-    ganador.append(total[0][1])
-    i = 1
-    while i < len(total) and len(ganador) < npop:
-        total[i] = list(total[i])
-        for j in ganador:
-            if np.linalg.norm(np.array(j) - np.array(total[i][1])) > radio:
-                total[i][3] = 1
-                ganador.append(total[i][1])
-            else:
-                continue
-        i += 1
-    # ordenados segun su aptitud y si son ganadores
-    total.sort(key=lambda x: (-x[3], x[2]))
-    # cortamos la poblaciones hasta la deseada
     total = total[:npop]
-    gen, fen, apt, gndr = zip(*total)
+    gen, fen, apt = zip(*total)
     return np.array(gen), np.array(fen), np.array(apt)
-
-
-def descenso_del_gradiente(x, alpha, iter):
-    """Descenso del gradiente como busqueda local x sera un arreglo de n vars"""
-    x_i = x
-    for i in range(iter):
-        # depende el numero de variables
-        grad_value = -alpha * np.array(grad_f(x_i[0], x_i[1]))
-        x_i = np.sum([x_i, grad_value], axis=0)
-    return x_i
-
-
-def memetico(hijos_genotipos, step, iteraciones, npop, nvars):
-    """Algortimso memeteico de buscqueda local laamrkiano con descenso del gradiente"""
-    genotipos = np.zeros((npop, nvars), dtype=float)
-    for i in range(len(hijos_genotipos)):
-        genotipos[i] = descenso_del_gradiente(hijos_genotipos[i], step, iteraciones)
-    return genotipos
 
 
 def estadistica(
@@ -277,7 +214,7 @@ def grafica(estadisticas):
     plt.show()
 
 
-def EA(f, lb, ub, pc, pm, nvars, npop, ngen, step, bl_iteraciones, radio):
+def EA(f, lb, ub, pc, pm, nvars, npop, ngen, precision):
     """Algoritmo Evolutivo para resolver f con 
         -Representacion: Real Entera
         - Selección de padres:  Universal Estocástica
@@ -287,45 +224,26 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen, step, bl_iteraciones, radio):
         - Selección: Más"""
     # Inicializar
     estadisticas = []
-    ba = np.zeros((ngen, 1), dtype=float)
-    genotipos, fenotipos, aptitudes = inicializar(f, npop, nvars, lb, ub)
+    ba = np.zeros((ngen, 1))
+    genotipos, fenotipos, aptitudes = inicializar(f, npop, nvars, lb, ub, precision)
     # Hasta condición de paro
     for i in range(ngen):
         mutaciones = 0
         cruzas = 0
-
         # Selección de padres
         padres = seleccion_universal_estocastica(aptitudes, npop)
-
         # Cruza
-        hijos_genotipos, cruzas = cruza_aritmetica_total(lb, ub, genotipos, padres, pc)
-
+        hijos_genotipos, cruzas = cruza_aritmetica_total(
+            lb, ub, genotipos, padres, pc, precision
+        )
         # Mutación
-        hijos_genotipos, mutaciones = mutacion_uniforme(hijos_genotipos, lb, ub, pm)
-
-        # Memetico
-        # Improve memetico lamarkiano
-        hijos_genotipos = memetico(hijos_genotipos, step, bl_iteraciones, npop, nvars)
-
-        # Fenotipos y aptitud
-        hijos_fenotipos = hijos_genotipos
-
+        hijos_genotipos, mutaciones = mutacion_uniforme(
+            hijos_genotipos, lb, ub, pm, precision
+        )
+        hijos_fenotipos = fenotipo(hijos_genotipos, precision)
         hijos_aptitudes = f(hijos_fenotipos)
 
-        # Selección de siguiente generación
-        genotipos, fenotipos, aptitudes = seleccion_mas_clearing(
-            npop,
-            genotipos,
-            fenotipos,
-            aptitudes,
-            hijos_genotipos,
-            hijos_fenotipos,
-            hijos_aptitudes,
-            radio,
-        )
-
         # Estadistica
-        # Valor si imprimir estadisticas por gneracion
         mostrar = False
         estadisticas.append(
             estadistica(
@@ -343,11 +261,20 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen, step, bl_iteraciones, radio):
             )
         )
 
-    # Grafica
+        # Selección de siguiente generación
+        genotipos, fenotipos, aptitudes = seleccion_mas(
+            npop,
+            genotipos,
+            fenotipos,
+            aptitudes,
+            hijos_genotipos,
+            hijos_fenotipos,
+            hijos_aptitudes,
+        )
+
     grafica(estadisticas)
     # Regresar mejor solución
-    best = np.argmin(aptitudes)
-    return genotipos, fenotipos, aptitudes
+    return genotipos[padres], fenotipos[padres], aptitudes[padres]
 
 
 # Random seed
@@ -355,38 +282,29 @@ seed = np.random.randint(100000)
 np.random.seed(seed=seed)
 # Numero de variables para el cromosoma
 nvars = 2
-# limite inferior del espacio de busqueda
-lb = -100
-# Limite superior del espacio de busqueda
-ub = 100
-
 # Numero de poblacion
 npop = 20
-# Numero de Generaciones
-ngen = 30
+# limite inferior del espacio de busqueda
+lb = -512
+# Limite superior del espacio de busqueda
+ub = 512
+# Usaremos una Precision de 5 decimales
+precision = 5
 # porcentaje de Cruza
 pc = 0.9
 # Porcentaje de Mutacion
 pm = 0.2
-
-# Numero de pasos de buscqueda local
-bl_iteraciones = 30
-# Tamaño de paso para la busqueda local
-beta = np.linalg.norm(np.array([lb, lb]) - np.array([ub, ub])) / 20
-step = beta / 500
-
-# Radio para la los nichos
-radio = beta
+# Numero de Generaciones
+ngen = 30
 
 # modificaremos el formato para que  no aparezca en forma exponencial
 np.set_printoptions(suppress=True)
-# EA
-bgen, bfen, bapt = EA(f, lb, ub, pc, pm, nvars, npop, ngen, step, bl_iteraciones, radio)
-# Resultados
+bgen, bfen, bapt = EA(f, lb, ub, pc, pm, nvars, npop, ngen, precision)
+#Resultados
 print("Se utilizo la semilla aleatoria ", seed)
 best = np.argmin(bapt)
 print("minima", np.min(bapt))
 print("media", np.mean(bapt))
 print("mediana", np.median(bapt))
-print("desviacion estandar", np.std(bapt))
+print("desviacion estandar",np.std(bapt))
 print("Aptitudes", bapt)
