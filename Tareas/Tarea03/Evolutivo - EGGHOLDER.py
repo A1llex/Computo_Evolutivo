@@ -24,15 +24,17 @@ Se realizara con la siguiente seleccion de componentes
 
 # Aqui sera necesario declarar la funcion para que sympy realice el calculo del gradiente
 x1, x2 = symbols("x1 x2", real=True)
-sympyf =  - (x2 + 47 ) * sin(sqrt(abs(x2+ (x1/2) + 47))) - x1 * sin(sqrt(abs( x1-(x2+47) )))
+sympyf = -(x2 + 47) * sin(sqrt(abs(x2 + (x1 / 2) + 47))) - x1 * sin(
+    sqrt(abs(x1 - (x2 + 47)))
+)
 grad_f = lambdify((x1, x2), derive_by_array(sympyf, (x1, x2)))
 
 
 def f(x):
-    x1 = np.delete(x , 0 , 1)
-    x2 = np.delete(x , 0 , 1)
-    sumando1 = (x2 + 47)*np.sin(np.sqrt(np.absolute(x2 + (x1/2) + 47)))
-    sumando2 = x1*np.sin(np.sqrt(np.absolute(x1-(x2+47))))
+    x1 = np.delete(x, 0, 1)
+    x2 = np.delete(x, 0, 1)
+    sumando1 = (x2 + 47) * np.sin(np.sqrt(np.absolute(x2 + (x1 / 2) + 47)))
+    sumando2 = x1 * np.sin(np.sqrt(np.absolute(x1 - (x2 + 47))))
     return 960 - sumando1 - sumando2
 
 
@@ -70,7 +72,8 @@ def seleccion_universal_estocastica(aptitudes, npop):
     for i in range(npop):
         suma += vE[i]
         for ptr in np.arange(ptr, suma, 1):
-            padres.append(i)
+            if len(padres) < npop:
+                padres.append(i)
             ptr += 1
     return padres
 
@@ -147,7 +150,7 @@ def seleccion_mas_clearing(
     radio,
 ):
     """Seleccion mas para la poblacion , esto es unir ambas poblaciones y elegir la mejor mitad deacuerdo a la aptitud"""
-    # Lo que haremos sera juntar todos en una lista de 3-tuplas y ordenarlas por aptitud
+    # Lo que haremos sera juntar todos en una lista de 3-tuplas+1 y ordenarlas por aptitud
 
     # meteremos otra que sera true o false o 1 y 0 si son centros o no
     pganador = np.zeros(len(aptitudes), dtype=float)
@@ -176,7 +179,7 @@ def seleccion_mas_clearing(
                 continue
         i += 1
     # ordenados segun su aptitud y si son ganadores
-    total.sort(key=lambda x: ( -x[3] ,x[2] ))
+    total.sort(key=lambda x: (-x[3], x[2]))
     # cortamos la poblaciones hasta la deseada
     total = total[:npop]
     gen, fen, apt, gndr = zip(*total)
@@ -188,7 +191,7 @@ def descenso_del_gradiente(x, alpha, iter):
     x_i = x
     for i in range(iter):
         # depende el numero de variables
-        grad_value = -alpha * np.array(grad_f(x_i[0], x_i[1]))
+        grad_value = -alpha * np.array(grad_f(x_i[0], x_i[1],))
         x_i = np.sum([x_i, grad_value], axis=0)
     return x_i
 
@@ -212,63 +215,53 @@ def estadistica(
     padres,
     mutaciones,
     cruzas,
+    mostrar,
 ):
     """Estadisticas, regresa [aptMin , aptMed ,aptMax,desvEst]
     No hay que olvidar que lo que estamos haciendo es minimizar por eso buscamos el mas pequeño"""
-    print("------------------------------------------------------------")
-    print("Generación:", generacion)
     aptMax = np.argmax(aptitudes)
     aptMed = np.mean(aptitudes)
     aptMin = np.argmin(aptitudes)
     desvEst = np.std(aptitudes)
     mediana = np.median(aptitudes)
-    print(
-        "La poblaicon y los hijos seran presentados como : \n[[indice, genotipo , fenotipo, aptitudes  , probabilidad],...]"
-    )
-    print(
-        "Población:\n",
-        np.concatenate(
-            (
-                np.arange(len(aptitudes)).reshape(-1, 1),
-                genotipos,
-                aptitudes.reshape(-1, 1),
-                #aptitudes.reshape(-1, 1) / np.sum(aptitudes),
+    if mostrar:
+        print("------------------------------------------------------------")
+        print("Generación:", generacion)
+        print(
+            "La poblaicon y los hijos seran presentados como : \n[[indice, genotipo , fenotipo, aptitudes  , probabilidad],...]"
+        )
+        print(
+            "Población :\n",
+            np.concatenate(
+                (
+                    np.arange(len(aptitudes)).reshape(-1, 1),
+                    genotipos,
+                    aptitudes.reshape(-1, 1),
+                    aptitudes.reshape(-1, 1) / np.sum(aptitudes),
+                ),
+                1,
             ),
-            1,
-        ),
-    )
-    print(
-        f"Mejor individuo\
-        \nIndice: {aptMin} \
-        \nGenotipo: {genotipos[aptMin]} \
-        \nFenotipo: {fenotipos[aptMin]} \
-        \nAptitud: {aptitudes[aptMin]}"
-    )
-    print(
-        f"Aptitud Maxima {aptitudes[aptMax]} \
-        \nAptitud Media {aptMed} \
-        \nAptitud Minima {aptitudes[aptMin]}\
-        \nAptitud Mediana {mediana}"
-    )
-    print("Desviacion Estandar", desvEst)
-    print("Padres Seleccionados", padres)
-    print("Frecuencia de padres seleccionados:", np.bincount(padres))
-    print(
-        f"Cruzas Efectuadas {cruzas} \
-        \nMutaciones Efectuadas {mutaciones}"
-    )
-    # print('Hijos:\n', np.concatenate(( np.arange(len(aptitudes)).reshape(-1, 1) , hijos_genotipos, hijos_fenotipos, hijos_aptitudes.reshape(-1, 1), hijos_aptitudes.reshape(-1, 1)/np.sum(hijos_aptitudes)), 1))
-    # Informacion Requerida para ejecucion de 6 individuos y 2 generaciones.
-    # print(f"-PADRES \
-    #     \nGenotipo {genotipos} \
-    #     \nFenotipo {fenotipos} \
-    #     \nPadres Seleccionados {padres} ")
-    # print(f"-HIJOS\
-    #     \nGenotipo {hijos_genotipos} \
-    #     \nFenotipo {hijos_fenotipos} \
-    #     \nValores de cruza {cruzas} \
-    #     \nValores de Mutacion {mutaciones}")
-
+        )
+        print(
+            f"Mejor individuo\
+            \nIndice: {aptMin} \
+            \nGenotipo: {genotipos[aptMin]} \
+            \nFenotipo: {fenotipos[aptMin]} \
+            \nAptitud: {aptitudes[aptMin]}"
+        )
+        print(
+            f"Aptitud Maxima {aptitudes[aptMax]} \
+            \nAptitud Media {aptMed} \
+            \nAptitud Minima {aptitudes[aptMin]}\
+            \nAptitud Mediana {mediana}"
+        )
+        print("Desviacion Estandar", desvEst)
+        print("Padres Seleccionados", padres)
+        print("Frecuencia de padres seleccionados:", np.bincount(padres))
+        print(
+            f"Cruzas Efectuadas {cruzas} \
+            \nMutaciones Efectuadas {mutaciones}"
+        )
     return [aptMin, aptMed, aptMax, desvEst, mediana]
 
 
@@ -333,6 +326,8 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen, step, bl_iteraciones, radio):
         )
 
         # Estadistica
+        # Valor si imprimir estadisticas por gneracion
+        mostrar = False
         estadisticas.append(
             estadistica(
                 i,
@@ -345,22 +340,15 @@ def EA(f, lb, ub, pc, pm, nvars, npop, ngen, step, bl_iteraciones, radio):
                 padres,
                 mutaciones,
                 cruzas,
+                mostrar,
             )
         )
 
-        # Mejor individuo
-        ba[i] = np.copy(aptitudes[estadisticas[i][0]])
-
-        #Checaremos si alguno ya cumple estar en la solucion (por la construccion de nuestra funcion esto es que su aptitud sea 0 dado que minimizamos)
-        if (any(v == 0 for v in aptitudes)):
-            break
-
-    print("------------------------------")
-    print("Tabla de mejores aptitudes :\n", ba.reshape(-1, 1))
-    grafica(estadisticas)
+    # Grafica
+    # grafica(estadisticas)
     # Regresar mejor solución
-    padres = np.argmin(aptitudes)
-    return genotipos[padres], fenotipos[padres], aptitudes[padres]
+    best = np.argmin(aptitudes)
+    return genotipos, fenotipos, aptitudes
 
 
 # Random seed
@@ -368,38 +356,38 @@ seed = np.random.randint(100000)
 np.random.seed(seed=seed)
 # Numero de variables para el cromosoma
 nvars = 2
-# Numero de poblacion
-npop = 10
 # limite inferior del espacio de busqueda
 lb = -512
 # Limite superior del espacio de busqueda
 ub = 512
-# Usaremos un de 5 decimale = 5
+
+# Numero de poblacion
+npop = 20
+# Numero de Generaciones
+ngen = 30
 # porcentaje de Cruza
 pc = 0.9
 # Porcentaje de Mutacion
 pm = 0.2
-# Numero de Generaciones
-ngen = 10
 
 # Numero de pasos de buscqueda local
-bl_iteraciones = 10
+bl_iteraciones = 30
 # Tamaño de paso para la busqueda local
-beta = np.linalg.norm(np.array([lb,lb])- np.array([ub,ub])) / 10
-step = beta/1000
+beta = np.linalg.norm(np.array([lb, lb]) - np.array([ub, ub])) / 20
+step = beta / 500
 
 # Radio para la los nichos
 radio = beta
 
 # modificaremos el formato para que  no aparezca en forma exponencial
 np.set_printoptions(suppress=True)
+# EA
 bgen, bfen, bapt = EA(f, lb, ub, pc, pm, nvars, npop, ngen, step, bl_iteraciones, radio)
+# Resultados
 print("Se utilizo la semilla aleatoria ", seed)
-print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-print(
-    f"El Resultado del mejor individuo en base a su aptitud es el que tiene \
-    \nGenotipo es {bgen}  \
-    \nFenotipo es {bfen}  \
-    \nY una Aptitud de {bapt}"
-)
-print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+best = np.argmin(bapt)
+print("minima", np.min(bapt))
+print("media", np.mean(bapt))
+print("mediana", np.median(bapt))
+print("desviacion estandar", np.std(bapt))
+
