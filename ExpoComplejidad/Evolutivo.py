@@ -2,14 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 """
-@author: Alex Gerardo Fernandez Aguilar
 Algoritmo Evoulutivo para resolver 
 Max Sat
 ### Componentes
-representacion combinatoria es decir binaria
-F(x) 
-
-
 """
 
 
@@ -30,24 +25,21 @@ def f(x):
     17*( x[6] && ! x[7] ) ||
      7*( x[2] && x[3] && x[5] ) ||
     16*( x[0] && !x[5] && ! x[3] )
-
-
     """
+
     resul = np.zeros(len(x))
     for i  in range(len(x)):
         resul[i] = resul[i] = 19*((not x[i][2]) and (x[i][7]) and (x[i][4])) + \
         11*((x[i][3]) and (x[i][6])) + \
         22*((not x[i][0]) and (not x[i][4])) + \
-        5*((not x[i][2]) and (x[i][5]) and (not x[i][0]) and (x[i][7]) and (x[i][1]) and (x[i][6])) +30*((x[i][4]) and (x[i][1]) and (x[i][6]) and (x[i][0])) + \
+        5*((not x[i][2]) and (x[i][5]) and (not x[i][0]) and (x[i][7]) and (x[i][1]) and (x[i][6])) + \
+        30*((x[i][4]) and (x[i][1]) and (x[i][6]) and (x[i][0])) + \
         11*((not x[i][1]) and (x[i][3])) + \
         1*((x[i][0]) and (x[i][5]) and (x[i][6])) + \
         2*((x[i][7]) and (not x[i][0])) + \
         17*((x[i][6]) and (not x[i][7])) +  \
         7*((x[i][2]) and (x[i][3]) and (x[i][5])) +  \
         16*((x[i][0]) and (not x[i][5]) and (not x[i][3]))
-
-
-    print(resul)
     return resul
 
 
@@ -63,25 +55,20 @@ def inicializar(f, npop, nvars):
     return genotipos, fenotipos, aptitudes
 
 
-def seleccion_universal_estocastica(aptitudes, npop):
+def seleccion_ruleta(aptitudes, npop):
     """Funcion Estocastica para determinar ``npop`` padres de una fomra Universal Etocastica"""
     # Probabilidad
     # Es necesaria que como minimizamos la aptitud entre menor sera sera mejor por esto hay que
     p = aptitudes/sum(aptitudes)
-    # Valor Esperado
-    vE = np.multiply(p, npop)
-    # Numero uniformemente aleatorio
-    ptr = np.random.uniform(0, 1)
-    # Suma actual
-    suma = 0
-    # lista de padres
-    padres = []
+    # Valor Acumulado
+    cp= np.cumsum(p)
+    padres = np.zeros(npop)
+    #genearar aleatorio
     for i in range(npop):
-        suma += vE[i]
-        for ptr in np.arange(ptr, suma, 1):
-            padres.append(i)
-            ptr += 1
-    return padres
+        X = np.random.uniform()
+        #seleccionando padre
+        padres[i] = np.argwhere(cp > X)[0]
+    return padres.astype(int)
 
 
 def cruza_de_un_punto(genotipos, padres, pc):
@@ -140,31 +127,18 @@ def estadistica(generacion, genotipos, fenotipos, aptitudes, hijos_genotipos, hi
     desvEst = np.std(aptitudes)
     mediana = np.median(aptitudes)
     print(f"Mejor individuo\
-        \nIndice: {aptMin} \
-        \nGenotipo: {genotipos[aptMin]} \
-        \nFenotipo: {fenotipos[aptMin]} \
-        \nAptitud: {aptitudes[aptMin]}")
+        \nIndice del mejor individuo: {aptMax} \
+        \nGenotipo: {genotipos[aptMax]} \
+        \nFenotipo: {fenotipos[aptMax]} \
+        \nAptitud: {aptitudes[aptMax]}")
     print(f"Aptitud Maxima {aptitudes[aptMax]} \
         \nAptitud Media {aptMed} \
         \nAptitud Minima {aptitudes[aptMin]}\
         \nAptitud Mediana {mediana}")
-    print("Desviacion Estandar", desvEst)
     print("Padres Seleccionados", padres)
     print('Frecuencia de padres seleccionados:', np.bincount(padres))
     print(f"Cruzas Efectuadas {cruzas} \
         \nMutaciones Efectuadas {mutaciones}")
-    #print('Hijos:\n', np.concatenate(( np.arange(len(aptitudes)).reshape(-1, 1) , hijos_genotipos, hijos_fenotipos, hijos_aptitudes.reshape(-1, 1), hijos_aptitudes.reshape(-1, 1)/np.sum(hijos_aptitudes)), 1))
-    # Informacion Requerida para ejecucion de 6 individuos y 2 generaciones.
-    # print(f"-PADRES \
-    #     \nGenotipo {genotipos} \
-    #     \nFenotipo {fenotipos} \
-    #     \nPadres Seleccionados {padres} ")
-    # print(f"-HIJOS\
-    #     \nGenotipo {hijos_genotipos} \
-    #     \nFenotipo {hijos_fenotipos} \
-    #     \nValores de cruza {cruzas} \
-    #     \nValores de Mutacion {mutaciones}")
-
     return [aptMin, aptMed, aptMax, desvEst, mediana]
 
 
@@ -172,13 +146,7 @@ def grafica(estadisticas):
     """Reportar gráfica de convergencia. 
     Eje x número de generaciones, 
     eje y mediana de la mejor aptitud de cada generación"""
-    # Plot
-    # plt.xlim(0,ngen)
-    # plt.ylim(0.8,1.4)
-
-    # Plot
     plt.plot(range(len(estadisticas)), list(zip(*estadisticas))[4], marker="o")
-
     plt.xlabel("Generaciones")
     plt.ylabel("Mediana de  Aptitudes")
     plt.title("Grafica de Convergencia")
@@ -196,7 +164,7 @@ def EA(f, pc, pm, nvars, npop, ngen):
         mutaciones = 0
         cruzas = 0
         # Selección de padres
-        padres = seleccion_universal_estocastica(aptitudes, npop)
+        padres = seleccion_ruleta(aptitudes, npop)
         # Cruza
         hijos_genotipos, cruzas = cruza_de_un_punto(
             genotipos, padres, pc)
@@ -211,7 +179,7 @@ def EA(f, pc, pm, nvars, npop, ngen):
             estadistica(i, genotipos, fenotipos, aptitudes, hijos_genotipos, hijos_fenotipos, hijos_aptitudes, padres, mutaciones, cruzas))
 
         # Mejor individuo
-        ba[i] = np.copy(aptitudes[estadisticas[i][0]])
+        ba[i] = np.copy(aptitudes[estadisticas[i][2]])
 
         # Selección de siguiente generación
         genotipos, fenotipos, aptitudes = seleccion_mas(npop,
@@ -241,8 +209,8 @@ ngen = 10
 # modificaremos el formato para que  no aparezca en forma exponencial
 np.set_printoptions(suppress=True)
 bgen, bfen, bapt = EA(f,  pc, pm, nvars, npop, ngen)
-print("Se utilizo la semilla aleatoria ", seed)
 print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+print("Se utilizo la semilla aleatoria ", seed)
 print(f"El Resultado del mejor individuo en base a su aptitud es el que tiene \
     \nGenotipo es {bgen}  \
     \nFenotipo es {bfen}  \
